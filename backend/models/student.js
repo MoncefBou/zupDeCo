@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose')
 
 const studentSchema = new mongoose.Schema({
     firstName: { type: String, require: true },
@@ -21,6 +21,6 @@ const studentSchema = new mongoose.Schema({
     phoneNumber: { type: Number, require: true },
 })
 
-const studentModel = mongoose("Student", studentSchema)
+const studentModel = mongoose.model("Student", studentSchema)
 
 module.exports = studentModel
