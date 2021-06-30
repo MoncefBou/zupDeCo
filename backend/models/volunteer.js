@@ -5,8 +5,8 @@ const volunteerSchema = new mongoose.Schema({
     lastName: { type: String, require: true },
     gender: { type: String, require: true },
     email: { type: String, require: true },
-    telephone: { type: Number, require: true },
-    eleve: [{
+    phoneNumber: { type: Number, require: true },
+    student: [{
         type: mongoose.Types.ObjectId,
         ref: "Student"
     }],

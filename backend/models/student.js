@@ -18,7 +18,7 @@ const studentSchema = new mongoose.Schema({
     }],
     signupDate: { type: Date, require: true },
     email: { type: String, require: true },
-    telephone: { type: Number, require: true },
+    phoneNumber: { type: Number, require: true },
 })
 
 const studentModel = mongoose("Student", studentSchema)

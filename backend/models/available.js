@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const lessonSchema = new mongoose.Schema({
+const availableSchema = new mongoose.Schema({
     name: [{
         type: mongoose.Types.ObjectId,
         ref: "Day"
@@ -9,6 +9,6 @@ const lessonSchema = new mongoose.Schema({
     timeEnd: {type : Date, require: true}
 })
 
-const lessonModel = mongoose.model('Lesson', lessonSchema)
+const availableModel = mongoose.model('Available', availableSchema)
 
-module.exports = lessonModel
+module.exports = availableModel
