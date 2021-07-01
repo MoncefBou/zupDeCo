@@ -144,7 +144,7 @@ const addAvailability = async (req, res) => {
         // seconds = leaves - 60 * minutes
 
         let startHour = 8 * 3600
-        const endHour = ( 20 * 3600 ) - 3600
+        const endHour = (20 * 3600) - 3600
         const day = "60dc6910c84622165ce9b93c"
         const arrayOfDocument = []
 
@@ -186,8 +186,30 @@ const addStudents = async (req, res) => {
                 phoneNumber: 0610223040,
                 schoolLevel: "60dc681368383015eaa9444a",
                 available: ["60dc87288771261bbb666125", "60dc87b82909511bf02dd732"],
-                lesson: ["60dc66ca57a73d156f3e0df7"],
-                signupDate: new Date("2020-05-03"),
+                lesson: ["60dc66ca57a73d156f3e0df7", "60dc66ca57a73d156f3e0df7"],
+                signupDate: "2021-02-03",
+            },
+            {
+                firstName: "Cyborg",
+                lastName: "Stone",
+                gender: "H",
+                email: "cyborgtitan@gmail.com",
+                phoneNumber: 0611223340,
+                schoolLevel: "60dc681368383015eaa9444e",
+                available: ["60dc87b82909511bf02dd732", "60dc87b82909511bf02dd73b", "60dc87b82909511bf02dd732"],
+                lesson: ["60dc66ca57a73d156f3e0df8"],
+                signupDate: "2021-01-29",
+            },
+            {
+                firstName: "Raven",
+                lastName: "Roth",
+                gender: "F",
+                email: "ravenroth@gmail.com",
+                phoneNumber: 0611323340,
+                schoolLevel: "60dc681368383015eaa9444f",
+                available: ["60dc860c233ec71b21e6a235", "60dc87e3bc15cc1c13962347", "60dc87e3bc15cc1c13962354", "60dc87b82909511bf02dd732"],
+                lesson: ["60dc66ca57a73d156f3e0df7", "60dc66ca57a73d156f3e0df6", "60dc66ca57a73d156f3e0df8"],
+                signupDate: "2020-12-13",
             }
         ])
 

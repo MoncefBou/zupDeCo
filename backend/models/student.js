@@ -16,7 +16,7 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Lesson"
     }],
-    signupDate: { type: Date, require: true },
+    signupDate: { type: String, require: true },
     email: { type: String, require: true },
     phoneNumber: { type: Number, require: true },
 })
