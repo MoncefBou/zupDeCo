@@ -117,20 +117,33 @@ router.get('/', async (req, res) => {
 
         console.log(dataStudents)
 
-        const responseToSend = dataStudents.filter(elem => {
+        availableInSeconds.forEach((eachElement, index) => {
+            const responseToSend = dataStudents.filter(elem => {
+                const sameTimeBegin = false
 
                 const newArray = elem.available.filter(element => {
-                    
+
+                    if (eachElement.timeBegin === element.timeBegin
+                        && eachElement.day === element.day[0].name) {
+                        sameTimeBegin = true
+                    }
+
+                    return sameTimeBegin
+
                 })
-        })
+
+                return sameTimeBegin
+
+            })
+        });
 
         res.json(dataStudents)
+        // dataStudents[0].available[0].day[0].name
         // res.json(test)
     } catch (error) {
         console.log(error);
         res.status(500).json(error)
     }
-
 })
 
 

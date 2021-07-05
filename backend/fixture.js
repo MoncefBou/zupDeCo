@@ -20,7 +20,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true 
 })
 
 // POUR AJOUTER 2 VOLONTAIRES À LA BDD ET FAIRE LES TESTS
-const addVolunteers = async (req, res) => {
+const addVolunteers = async () => {
     try {
         await volunteerModel.insertMany([
             {
@@ -44,7 +44,7 @@ const addVolunteers = async (req, res) => {
     }
 }
 
-const addlessons = async (req, res) => {
+const addlessons = async () => {
     try {
         await lessonModel.insertMany([
             {
@@ -69,7 +69,7 @@ const addlessons = async (req, res) => {
     }
 }
 
-const addlevelSchool = async (req, res) => {
+const addlevelSchool = async () => {
     try {
         await schoolLevelModel.insertMany([
             {
@@ -106,9 +106,9 @@ const addlevelSchool = async (req, res) => {
     }
 }
 
-const addDay = async (req, res) => {
+const addDay = async () => {
     try {
-        await dayModel.insertMany([
+        const days = await dayModel.insertMany([
             {
                 name: "Lundi"
             },
@@ -129,12 +129,20 @@ const addDay = async (req, res) => {
             }
         ])
 
+        days.map(async (day) => {
+            try {
+                await addAvailability(day.name)
+            } catch (error) {
+                console.log(error)
+            }
+        })
+
     } catch (error) {
         console.log(error);
     }
 }
 
-const addAvailability = async (req, res) => {
+const addAvailability = async (dayName) => {
     try {
         // storedTime = hours * 3600 + minutes * 60 + seconds
 
@@ -142,15 +150,24 @@ const addAvailability = async (req, res) => {
         // leaves = storedTime - hours * 3600
         // minutes = leaves / 60
         // seconds = leaves - 60 * minutes
-
-        let startHour = 8 * 3600
-        const endHour = (20 * 3600) - 3600
-        const day = "60dc6910c84622165ce9b93c"
+        let startHour;
+        let endHour;
         const arrayOfDocument = []
+
+        if (dayName === "Samedi") {
+            startHour = 8 * 3600
+            endHour = (20 * 3600) - 3600
+        } else if (dayName === "Samedi") {
+            startHour = 14 * 3600
+            endHour = (20 * 3600) - 3600
+        } else {
+            startHour = 18 * 3600
+            endHour = (20 * 3600) - 3600
+        }
 
         while (startHour <= endHour) {
             const objectDocument = {
-                day: day,
+                day: dayName,
                 timeBegin: startHour
             }
             arrayOfDocument.push(objectDocument)
@@ -164,7 +181,7 @@ const addAvailability = async (req, res) => {
     }
 }
 
-const addStudents = async (req, res) => {
+const addStudents = async () => {
     try {
         await studentModel.insertMany([
             {

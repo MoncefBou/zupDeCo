@@ -3,10 +3,10 @@ const mongoose = require('mongoose')
 const studentSchema = new mongoose.Schema({
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
-    schoolLevel: [{
+    schoolLevel: {
         type: mongoose.Types.ObjectId,
         ref: "SchoolLevel"
-    }],
+    },
     gender: { type: String, require: true },
     available: [{
         type: mongoose.Types.ObjectId,
