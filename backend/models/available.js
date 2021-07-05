@@ -5,7 +5,7 @@ const availableSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Day"
     },
-    timeBegin: {type : Number, require: true},
+    timeBegin: [{type : Number, require: true}]
 })
 
 const availableModel = mongoose.model('Available', availableSchema)
