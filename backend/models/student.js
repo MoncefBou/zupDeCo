@@ -3,11 +3,12 @@ const mongoose = require('mongoose')
 const studentSchema = new mongoose.Schema({
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
-    schoolLevel: [{
+    gender: { type: String, require: true },
+    dateOfBirth: {type: Date, require: true},
+    schoolLevel: {
         type: mongoose.Types.ObjectId,
         ref: "SchoolLevel"
-    }],
-    gender: { type: String, require: true },
+    },
     available: [{
         type: mongoose.Types.ObjectId,
         ref: "Available"
@@ -16,9 +17,21 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Lesson"
     }],
-    signupDate: { type: String, require: true },
-    email: { type: String, require: true },
+    signupDate: { type: String, require: true, default: Date.now },
+    mail: { type: String, require: true },
     phoneNumber: { type: Number, require: true },
+    address : {
+        name: {type: String, require: true},
+        city: {
+            type: mongoose.Types.ObjectId,
+            ref: "City"
+        }
+    },
+    school: {
+        type: mongoose.Types.ObjectId,
+        ref: "School"},
+
+    message: [{ body: String, require: true }]
 })
 
 const studentModel = mongoose.model("Student", studentSchema)
