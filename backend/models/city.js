@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const citySchema = new mongoose.Schema({
-    name: { type: String, require: true },
+    city: { type: String, require: true },
 })
 
 const cityModel = mongoose.model('City', citySchema)

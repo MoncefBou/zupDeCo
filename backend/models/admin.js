@@ -1,18 +1,13 @@
 const mongoose = require('mongoose')
 
-const volunteerSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
-    gender: { type: String, require: true },
     email: { type: String, require: true },
     password : {type : String, require : true},
     phoneNumber: { type: Number, require: true },
-    student: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Student"
-    }]
 })
 
-const volunteerModel = mongoose.model("Volunteer", volunteerSchema)
+const adminModel = mongoose.model("Admin", adminSchema)
 
-module.exports = volunteerModel
+module.exports = adminModel

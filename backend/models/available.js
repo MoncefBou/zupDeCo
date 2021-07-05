@@ -6,8 +6,6 @@ const availableSchema = new mongoose.Schema({
         ref: "Day"
     },
     timeBegin: {type : Number, require: true},
-    timeEnd: {type : Number, require: true}
-
 })
 
 const availableModel = mongoose.model('Available', availableSchema)

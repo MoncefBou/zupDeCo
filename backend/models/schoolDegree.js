@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const schoolDegreeSchema = new mongoose.Schema({
-    name: { type: String, require: true },
+    degree: { type: String, require: true },
 })
 
 const schoolDegreeModel = mongoose.model('SchoolDegree', schoolDegreeSchema)
