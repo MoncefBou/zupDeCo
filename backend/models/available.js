@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose')
 
 const availableSchema = new mongoose.Schema({
-    name: [{
+    day: [{
         type: mongoose.Types.ObjectId,
         ref: "Day"
     }],
-    timeBegin: {type : Date, require: true},
-    timeEnd: {type : Date, require: true}
+    timeBegin: {type : Number, require: true},
+
 })
 
 const availableModel = mongoose.model('Available', availableSchema)

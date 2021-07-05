@@ -6,8 +6,8 @@ const mongoose = require("mongoose")
 
 const { PORT, MONGODB_URI } = process.env
 
-const volunteersRoutes = require('./routes/volunteersRoutes')
-const adminRoutes = require('./routes/adminRoutes')
+const { volunteersRoutes } = require('./routes/volunteersRoutes')
+const { adminRoutes } = require('./routes/adminRoutes')
 
 const { debug } = require("./middlewares/debug")
 
