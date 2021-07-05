@@ -1,13 +1,14 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose')
 
 const studentSchema = new mongoose.Schema({
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
-    schoolLevel: [{
+    gender: { type: String, require: true },
+    dateOfBirth: {type: Date, require: true},
+    schoolLevel: {
         type: mongoose.Types.ObjectId,
         ref: "SchoolLevel"
-    }],
-    gender: { type: String, require: true },
+    },
     available: [{
         type: mongoose.Types.ObjectId,
         ref: "Available"
@@ -16,11 +17,23 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Lesson"
     }],
-    signupDate: { type: Date, require: true },
+    signupDate: { type: String, default: Date.now },
     email: { type: String, require: true },
     phoneNumber: { type: Number, require: true },
+    address : {
+        street: {type: String, require: true},
+        city: {
+            type: mongoose.Types.ObjectId,
+            ref: "City"
+        }
+    },
+    school: {
+        type: mongoose.Types.ObjectId,
+        ref: "School"},
+
+    message: { type: String, require: true }
 })
 
-const studentModel = mongoose("Student", studentSchema)
+const studentModel = mongoose.model("Student", studentSchema)
 
 module.exports = studentModel
