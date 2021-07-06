@@ -4,7 +4,7 @@ const studentSchema = new mongoose.Schema({
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
     gender: { type: String, require: true },
-    dateOfBirth: {type: Date, require: true},
+    dateOfBirth: {type: Date },//, require: true},
     schoolLevel: {
         type: mongoose.Types.ObjectId,
         ref: "SchoolLevel"
@@ -21,7 +21,7 @@ const studentSchema = new mongoose.Schema({
     email: { type: String, require: true },
     phoneNumber: { type: Number, require: true },
     address : {
-        street: {type: String, require: true},
+        street: {type: String},//, require: true},
         city: {
             type: mongoose.Types.ObjectId,
             ref: "City"
@@ -31,7 +31,7 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "School"},
 
-    message: { type: String, require: true }
+    message: { type: String, },//require: true }
 })
 
 const studentModel = mongoose.model("Student", studentSchema)
