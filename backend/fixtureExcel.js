@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const extractExcel = require('./utils/extractExcel')
+const { extractExcel } = require('./utils/extractExcel')
 // creer le modele correspondant à la fixture
 // importer ici le modele en question
 // connecter à la dbd
@@ -19,7 +19,7 @@ mongoose.connect("mongodb://localhost:27017/ZupDeCo", { useNewUrlParser: true, u
     }
 })
 
-const AddSchoolDegree = async (req, res) => {
+const AddSchoolDegree = async () => {
     try {
         SchoolDegreeModel.deleteMany({})
         await SchoolDegreeModel.insertMany([
@@ -39,7 +39,7 @@ const AddSchoolDegree = async (req, res) => {
 }
 // AddSchoolDegree()
 
-const addlessons = async (req, res) => {
+const addLessons = async () => {
     try {
         lessonModel.deleteMany({})
         await lessonModel.insertMany([
@@ -68,7 +68,7 @@ const addlessons = async (req, res) => {
 }
 // addlessons()
 
-const addLevelSchool = async (req, res) => {
+const addLevelSchool = async () => {
     try {
         schoolLevelModel.deleteMany({})
         await schoolLevelModel.insertMany([
@@ -115,7 +115,7 @@ const addLevelSchool = async (req, res) => {
 }
 // addLevelSchool()
 
-const addDay = async (req, res) => {
+const addDay = async () => {
     try {
         dayModel.deleteMany({})
         await dayModel.insertMany([
@@ -144,7 +144,7 @@ const addDay = async (req, res) => {
 }
 // addDay()
 
-const addAvailability = async (req, res) => {
+const addAvailability = async () => {
     try {
         // storedTime = hours * 3600 + minutes * 60 + seconds
 
@@ -176,38 +176,34 @@ const addAvailability = async (req, res) => {
 }
 // addAvailability()
 
-const addStudent = async (req, res) => {
+const addStudent = async () => {
     try {
         studentModel.deleteMany({})
-
-        extractExcel.map((elem) => {
-         
-                 studentModel.insertMany({
-
-                signupDate: elem.signupDate,
-                firstName: elem.firstName,
-                lastName: elem.lastName,
-                gender: elem.gender,
-                schoolLevel: elem.schoolLevel,
-                lesson: [elem.lesson],
-                available: [elem.available],
-                dateOfBirth: elem.dateOfBirth,
-                email: elem.email,
-                phoneNumber: elem.phoneNumber,
-                // address: {
-                //     street: ,
-                //     city: ,
-                // },
-                // school: {
-
-                // },
-
-                // message: { type: String, require: true }
-            })
-    })
-} catch (error) {
-    console.log(error);
+        const result = await extractExcel()
+        // console.log("result in fixtureExcel: ", result);
+        
+        const newStudent = result.map((elem) => {
+                    console.log('elem: ', elem);
+            studentModel.insertMany([
+                {
+                    // signupDate: elem.signupDate,
+                    // firstname: elem.firstname,
+                    // lastname: elem.lastname,
+            //         // gender: elem.gender,
+            //         // schoolLevel : schoolLevelModel.findOne({level: elem.schoolLevel}._id),
+            //         // lesson: lessonModel.findOne({lesson: elem.lesson}._id),
+            //         // available: availableModel.findOne({available: elem.available}_id),
+            //         // dateOfBirth: elem.dateOfBirth,
+            //         // email: elem.email,
+            //         // phoneNumber: elem.phoneNumber,
+                }
+            ]) 
+        })
+        // console.log("newStudent: ", newStudent);
+        // mongoose.disconnect()
+    } catch (error) {
+        console.log(error);
+    }
 }
-}
+
 addStudent()
-// console.log(extractExcel)

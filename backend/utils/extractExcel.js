@@ -1,5 +1,5 @@
 const readXlsxFile = require('read-excel-file/node')
-
+// const array = [];
 const schema = {
   'signupDate': {
     prop: 'signupDate',
@@ -51,59 +51,89 @@ const schema = {
   }
 }
 
-const extractExcel = readXlsxFile("/home/lionel/Documents/konexio/zupDeCo/backend/HomeClasse tableau de suivi .xlsx", { schema })
-  .then(({ rows, errors }) => {
+// const extractExcel = readXlsxFile("/home/lionel/Documents/konexio/zupDeCo/backend/HomeClasse tableau de suivi .xlsx", { schema })
+const extractExcel = async () => {
+  const dataExcel = await readXlsxFile("/home/lionel/Documents/konexio/zupDeCo/backend/home-classe-test.xlsx", { schema })
 
-    // console.log("rows: ", rows);
-    // console.log("rows.available: ", rows[0].available);
+  errorRows = []
 
-    let availableInSeconds = []
-    let hourInSecondOfBegin;
-    let hourInSecondOfEnd;
+  const validRows = dataExcel.rows.filter((elem, index) => {
+    const separateAvailabilites = elem.available.split(',')
 
-    const convertAvailable = rows.map((elem, index) => {
-      const separateInArray = elem.available.split(' ')
-      // console.log("separateInArray: ", separateInArray);
+    const checkAvailabilites = separateAvailabilites.filter(availabilites => {
+      const separateDayOfTime = availabilites.trim().split(' ')
+      const separateTime = separateDayOfTime[1].split('-')
 
-      const separateHour = separateInArray[1].split('-')
-      // console.log("separateHour: ", separateHour);
-
-      if (!separateHour[1]) {
-        console.log(`${elem.nameOfStudents} n'a pas bien rentré ses disponibilités`);
-        return
-
-      } else {
-
-        const hourOfBegin = separateHour[0].split('h')
-        // console.log("hourOfBegin: ", hourOfBegin);
-
-        const hourOfEnd = separateHour[1].split('h')
-        // console.log("hourOfEnd: ", hourOfEnd);
-
-        if (hourOfBegin[1] === '') {
-          hourInSecondOfBegin = hourOfBegin[0] * 3600
-        } else {
-          hourInSecondOfBegin = (hourOfBegin[0] * 3600) + 1800
-        }
-        if (hourOfEnd[1] === '') {
-          hourInSecondOfEnd = (hourOfEnd[0] * 3600) - 3600
-        } else {
-          hourInSecondOfEnd = (hourOfEnd[0] * 3600) + 1800 - 3600
-        }
-
-        while (hourInSecondOfBegin <= hourInSecondOfEnd) {
-          const availability = { day: separateInArray[0], timeBegin: hourInSecondOfBegin }
-          availableInSeconds.push(availability)
-          hourInSecondOfBegin = hourInSecondOfBegin + 1800
-        }
+      if (!separateTime[1]) {
+        return false
       }
-      elem.available = separateInArray
 
-      console.log("elem: ", elem);
-
-      return elem
+      return true
     })
-    // console.log("availableInSeconds : ", availableInSeconds);
+
+    if (separateAvailabilites.length !== checkAvailabilites.length) {
+      errorRows.push({ row: index + 1, name: elem.firstname })
+      return false
+    }
+
+    return true
   })
+
+  console.log("errorRows", errorRows)
+
+  const dataTransformed = validRows.map((elem, index) => {
+
+    elem.available = convertAvailable(elem.available)
+
+    return elem
+  })
+
+  return dataTransformed
+}
+
+const convertAvailable = (userAvailabilities) => {
+  let hourInSecondOfBegin
+  let hourInSecondOfEnd
+
+  const separateAvailabilites = userAvailabilities.split(',')
+
+  const availabilities = {}
+
+  for (let i = 0; i < separateAvailabilites.length; i++) {
+    const elem = separateAvailabilites[i];
+
+    const separateDayOfTime = elem.trim().split(' ')
+
+    const separateTime = separateDayOfTime[1].split('-')
+
+    const hourOfBegin = separateTime[0].split('h')
+    const hourOfEnd = separateTime[1].split('h')
+
+    if (hourOfBegin[1] === '') {
+      hourInSecondOfBegin = hourOfBegin[0] * 3600
+    } else {
+      hourInSecondOfBegin = (hourOfBegin[0] * 3600) + 1800
+    }
+
+    if (hourOfEnd[1] === '') {
+      hourInSecondOfEnd = (hourOfEnd[0] * 3600) - 3600
+    } else {
+      hourInSecondOfEnd = (hourOfEnd[0] * 3600) + 1800 - 3600
+    }
+
+    while (hourInSecondOfBegin <= hourInSecondOfEnd) {
+
+      if (!availabilities.hasOwnProperty(separateDayOfTime[0])) {
+        availabilities[separateDayOfTime[0]] = [hourInSecondOfBegin]
+      } else {
+        availabilities[separateDayOfTime[0]].push(hourInSecondOfBegin)
+      }
+
+      hourInSecondOfBegin = hourInSecondOfBegin + 1800
+    }
+  }
+
+  return availabilities
+}
 
 module.exports = { extractExcel }
