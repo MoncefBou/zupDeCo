@@ -8,6 +8,7 @@ const { PORT, MONGODB_URI } = process.env
 
 const { volunteersRoutes } = require('./routes/volunteersRoutes')
 const { adminRoutes } = require('./routes/adminRoutes')
+const { studentsRoutes } = require('./routes/studentsRoutes')
 
 const { debug } = require("./middlewares/debug")
 
@@ -29,6 +30,7 @@ app.use(debug)
 
 app.use('/volunteers', volunteersRoutes)
 app.use('/admin', adminRoutes)
+app.use('/students', studentsRoutes)
 
 
 // SERVER
