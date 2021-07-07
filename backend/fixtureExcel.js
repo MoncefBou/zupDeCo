@@ -181,25 +181,26 @@ const addStudent = async () => {
         studentModel.deleteMany({})
         const result = await extractExcel()
         // console.log("result in fixtureExcel: ", result);
-        
+
         const newStudent = result.map((elem) => {
-                    console.log('elem: ', elem);
+            // console.log('elem: ', elem);
+            // studentModel.create([
             studentModel.insertMany([
                 {
                     // signupDate: elem.signupDate,
                     // firstname: elem.firstname,
                     // lastname: elem.lastname,
-            //         // gender: elem.gender,
-            //         // schoolLevel : schoolLevelModel.findOne({level: elem.schoolLevel}._id),
-            //         // lesson: lessonModel.findOne({lesson: elem.lesson}._id),
-            //         // available: availableModel.findOne({available: elem.available}_id),
-            //         // dateOfBirth: elem.dateOfBirth,
-            //         // email: elem.email,
-            //         // phoneNumber: elem.phoneNumber,
+                    // gender: elem.gender,
+                    // schoolLevel : schoolLevelModel.findOne({level: elem.schoolLevel}._id),
+                    // lesson: lessonModel.findOne({lesson: elem.lesson}._id),
+                    // available: availableModel.findOne({available: elem.available}._id),
+                    // dateOfBirth: elem.dateOfBirth,
+                    // email: elem.email,
+                    // phoneNumber: elem.phoneNumber,
                 }
-            ]) 
+            ])
         })
-        // console.log("newStudent: ", newStudent);
+        console.log("newStudent: ", newStudent);
         // mongoose.disconnect()
     } catch (error) {
         console.log(error);
