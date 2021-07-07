@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 
 const citySchema = new mongoose.Schema({
-    city: { type: String, require: true },
+    city: String,
+    codePostaux: Array
 })
 
 const cityModel = mongoose.model('City', citySchema)

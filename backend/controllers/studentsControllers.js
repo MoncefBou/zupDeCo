@@ -1,12 +1,13 @@
-const express = require('express')
+const studentModel = require('../models/student')
+const schoolModel = require('../models/school')
+const parentModel = require('../models/parent')
 
 
 const postStudentsByForm = async (req, res) => {
     try {
-
-        
-
-        res.json('test OK')
+        const newStudents = req.body
+        await studentModel.create(newStudents)
+        res.json(newStudents)
     } catch (error) {
         res.status(500).json(error)
     }

@@ -36,7 +36,11 @@ const studentSchema = new mongoose.Schema({
         require: true
     },
     message: String,
-    validation: { type: Boolean, default: false }
+    validation: { type: Boolean, default: false },
+    volunteers: {
+        type: mongoose.Types.ObjectId,
+        ref: "Volunteers",
+    }
 })
 
 const studentModel = mongoose.model("Student", studentSchema)
