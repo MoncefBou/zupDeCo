@@ -1,0 +1,21 @@
+.box-stepper {
+    margin: 100px;
+}
+.stepper{
+    margin-top: 70px;
+}
+.step{
+    margin-top: 40px;
+}
+
+@media screen and (max-width: 640px) {
+    .box-stepper {
+        margin: 20px
+    }
+    .stepper{
+        margin-top: 30px;
+    }
+    .step{
+        margin-top: 0px;
+    }
+}
