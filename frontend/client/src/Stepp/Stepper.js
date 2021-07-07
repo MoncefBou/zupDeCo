@@ -1,15 +1,14 @@
 import React from 'react';
-import './Css/Stepper.css'
+import '../Css/Stepper.css'
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Card from './pages/Card'
-import Hours from './pages/Hours'
-import Levels from './pages/Levels'
-import Buttons from './Button/Buttons'
+import Card from '../pages/Card'
+import Hours from '../pages/Hours'
+import Buttons from '../Button/Buttons'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Dispo', 'Niveaux', 'Eleve', 'recap'];
+    return ['Dispo', 'Eleve', 'recap'];
 }
 
 function getStepContent(stepIndex) {
@@ -33,15 +32,12 @@ function getStepContent(stepIndex) {
         case 0:
             return <Hours />;
         case 1:
-            return <Levels />;
-        case 2:
             return (
                 <div>
-
                     <Card /> <Buttons />;
                 </div>
             )
-        case 3:
+        case 2:
             return 'ce que tu a selectionner';
         default:
             return 'Unknown stepIndex';
