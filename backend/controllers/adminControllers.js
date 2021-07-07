@@ -5,7 +5,7 @@ const volunteerModel = require('../models/volunteer');
 const availableModel = require('../models/available');
 const dayModel = require('../models/day');
 const schoolLevelModel = require('../models/schoolLevel');
-const schoolDegreeModel = require('../models/schoolDegree')
+const schoolDegreeModel = require('../models/schoolDegree');
 
 const mongoose = require("mongoose");
 
@@ -21,20 +21,20 @@ const getAllStudents = async (req, res) => {
                 populate: {
                     path: "day",
                     model: dayModel,
-                    select:"name"
+                    select: "name"
                 }
             },
             {
                 path: "schoolLevel",
                 model: schoolLevelModel,
-                select: ["level","schoolDegree"],
+                select: ["level", "schoolDegree"],
                 populate: {
                     path: "schoolDegree",
                     model: schoolDegreeModel,
-                    select:"degree"
+                    select: "degree"
                 }
             }
-        ])
+        ]).lean()
 
         // ON FAIT UNE REQUETE À LA BDD EN LUI DEMANDANT DE MATCHER AVEC LES ELEVES QUI ONT LES MÊMES DISPO 
         // const allStudents = await studentModel.aggregate([
@@ -121,7 +121,7 @@ const getAllStudents = async (req, res) => {
 const getAllVolunteers = async (req, res) => {
     try {
 
-        const allVolunteers = await volunteerModel.find().populate("Student").lean()
+        const allVolunteers = await volunteerModel.find().populate("student", {_id:1}).lean()
 
         // const allVolunteers = await volunteerModel.aggregate([
         //     {
