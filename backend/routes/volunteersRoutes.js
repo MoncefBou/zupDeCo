@@ -1,16 +1,11 @@
 const express = require('express');
 
-const { getByAvailable, getByDegreesInSecond, getByLessonInFinal } = require('../controllers/volunteersControllers')
+const { getByAvailable, getByDegrees } = require('../controllers/volunteersControllers')
 
 const router = express.Router()
 
-
 router.get('/filter/available', getByAvailable)
 
-router.get('/filter/schoolDegree', getByDegreesInSecond)
-
-router.get('/filter/lesson', getByLessonInFinal)
-
-
+router.get('/filter/schoolDegree', getByDegrees)
 
 module.exports = { volunteersRoutes: router }
