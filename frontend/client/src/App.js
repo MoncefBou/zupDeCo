@@ -1,10 +1,12 @@
 import React from 'react';
-// import SignIn from './components/signIn';
+import Mom from './Mom';
+import './App.css'
+
+
+
 function App() {
   return (
-    <div>
-      {/* <SignIn /> */}
-    </div>
+    <Mom/>
   );
 }
 
