@@ -4,36 +4,42 @@ const studentSchema = new mongoose.Schema({
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
     gender: { type: String, require: true },
-    dateOfBirth: {type: Date },//, require: true},
+    dateOfBirth: { type: Date, require: true },
     schoolLevel: {
         type: mongoose.Types.ObjectId,
-        ref: "SchoolLevel"
+        ref: "SchoolLevel",
+        require: true
     },
     available: [{
         type: mongoose.Types.ObjectId,
-        ref: "Available"
+        ref: "Available",
+        require: true
     }],
-    lesson: [{
+    parent: {
         type: mongoose.Types.ObjectId,
-        ref: "Lesson"
-    }],
+        ref: "Parent",
+        require: true
+    },
     signupDate: { type: String, default: Date.now },
-    email: { type: String, require: true },
-    phoneNumber: { type: Number, require: true },
-    address : {
-        street: {type: String},//, require: true},
+    email: String,
+    address: {
+        street: { type: String },//, require: true},
         city: {
             type: mongoose.Types.ObjectId,
-            ref: "City"
+            ref: "City",
+            require: true
         }
     },
     school: {
         type: mongoose.Types.ObjectId,
-        ref: "School"},
-
-    message: { type: String, },//require: true }
+        ref: "School",
+        require: true
+    },
+    message: String,
+    validation: { type: Boolean, default: false }
 })
 
 const studentModel = mongoose.model("Student", studentSchema)
 
 module.exports = studentModel
+

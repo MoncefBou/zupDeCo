@@ -5,3 +5,4 @@ const { postStudentsByForm } = require('../controllers/studentsControllers')
 
 router.post('/newForm', postStudentsByForm)
 
+module.exports = { studentsRoutes : router}

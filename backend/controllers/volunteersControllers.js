@@ -50,198 +50,63 @@ const getByAvailable = async (req, res) => {
                 }
             },
             {
+                $lookup:
+                {
+                    from: 'schoollevels',
+                    localField: 'schoolLevel',
+                    foreignField: '_id',
+                    as: 'schoolLevel'
+                }
+            },
+            {
+                $unwind: {
+                    path: "$schoolLevel",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: 'schooldegrees',
+                    localField: 'schoolLevel.schoolDegree',
+                    foreignField: '_id',
+                    as: 'schoolLevel.schoolDegree'
+                }
+            },
+            {
+                $unwind: {
+                    path: "$schoolLevel.schoolDegree",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
                 $group: {
                     _id: "$_id",
-                    firstName: { "$first": "$firstName" },
-                    lastName: { "$first": "$lastName" },
                     gender: { "$first": "$gender" },
-                    email: { "$first": "$email" },
-                    phoneNumber: { "$first": "$phoneNumber" },
                     signupDate: { "$first": "$signupDate" },
-                    lesson: { "$first": "$lesson" },
-                    schoolLevel: { "$first": "$schoolLevel" },
+                    schoolLevel: { $first:{ class: "$schoolLevel.level", degree: "$schoolLevel.schoolDegree.degree" } },
                     available: { $push: { day: "$available.day.name", timeBegin: "$available.timeBegin" } },
                 }
             },
             {
                 $match: { available: { $in: dataAvailable } }
             },
-            {
-                $lookup:
-                {
-                    from: 'schoollevels',
-                    localField: 'schoolLevel',
-                    foreignField: '_id',
-                    as: 'schoolLevel'
-                }
-            },
         ])
 
-        // RÉCUPERER LES ID À ENVOYER AU FRONT
-        const idFilter = response.map(elem => elem._id)
-
-        // RÉCUPERER LES NIVEAUX DISPO SANS QU'ILS SOIENT RÉPÉTÉS
-        const allSchoolLevel = response.map(elem => elem.schoolLevel[0].name)
-        const schoolLevelAvailable = [];
-
-        allSchoolLevel.forEach(elem => {
-
-            if (schoolLevelAvailable[elem] === undefined) {
-                schoolLevelAvailable.push(elem)
-            }
-        });
-
-
-        res.json({ id: idFilter, schoolLevel: schoolLevelAvailable })
-
+        res.json(response)
     } catch (error) {
         console.log(error);
         res.status(500).json({ "err": error })
     }
 }
 
-const getByDegreesInSecond = async (req, res) => {
+const getByDegrees = async (req, res) => {
     try {
-
-        const idAlreadyFilter = req.body.id
-
-        // ON DOIT CONVERTIR LES ID EN OBJECTID POUR FAIRE LA RECHERCHE AVEC AGGREGATE
-        const idToUse = idAlreadyFilter.map(elem => mongoose.Types.ObjectId(elem))
 
         const schoolDegreeChoose = req.body.schoolDegree
 
-        // ----- TODO : LOOK UP SUR LE NIVEAU POUR POUVOIR FILTRER AVEC LE NIVEAU
+        // ON FAIT UNE REQUETE À LA BDD EN LUI DEMANDANT DE MATCHER AVEC LES ELEVES QUI ONT LES MÊMES DISPO 
         const response = await studentModel.aggregate([
-            {
-                $match: { _id: { $in: idToUse } }
-            },
-            {
-                $lookup:
-                {
-                    from: 'schoollevels',
-                    localField: 'schoolLevel',
-                    foreignField: '_id',
-                    as: 'schoolLevel'
-                }
-            },
-            {
-                $unwind: {
-                    path: "$schoolLevel",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup:
-                {
-                    from: 'schooldegrees',
-                    localField: 'schoolLevel.schoolDegree',
-                    foreignField: '_id',
-                    as: 'schoolLevel.schoolDegree'
-                }
-            },
-            {
-                $lookup:
-                {
-                    from: 'lessons',
-                    localField: 'lesson',
-                    foreignField: '_id',
-                    as: 'lesson'
-                }
-            },
-            {
-                $unwind: {
-                    path: "$schoolLevel.schoolDegree",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $match: { "schoolLevel.schoolDegree.degree": { $in: schoolDegreeChoose } }
-            },
-            {
-                $project: { _id: 1, lesson: 1, }
-            }
-        ])
-
-        const idFilter = response.map(elem => elem._id)
-
-        // RÉCUPERER LES MATIÉRES SANS QU'ELLES SOIENT RÉPÉTÉES
-        const allLessons = [];
-
-        response.forEach((element) => {
-            const Lessons = element.lesson.map(elem => elem.name)
-
-            allLessons.push(...Lessons)
-        });
-
-        const lessonsAvailable = [];
-        allLessons.forEach(elem => {
-
-            if (lessonsAvailable[elem] === undefined) {
-                lessonsAvailable.push(elem)
-            }
-        });
-
-        res.json({ lessons: lessonsAvailable, id: idFilter })
-
-    } catch (error) {
-        res.status(500).json(error)
-    }
-}
-
-const getByLessonInFinal = async (req, res) => {
-    try {
-
-        const idAlreadyFilter = req.body.id
-        // ON DOIT CONVERTIR LES ID EN OBJECTID POUR FAIRE LA RECHERCHE AVEC AGGREGATE
-        const idToUse = idAlreadyFilter.map(elem => mongoose.Types.ObjectId(elem))
-        const lessonsChoose = req.body.lesson
-
-        const response = await studentModel.aggregate([
-            {
-                $match: { _id: { $in: idToUse } }
-            },
-            {
-                $lookup:
-                {
-                    from: 'lessons',
-                    localField: 'lesson',
-                    foreignField: '_id',
-                    as: 'lesson'
-                }
-            },
-            {
-                $match: { lesson: { $elemMatch: { name: { $in: lessonsChoose } } } }
-            },
-            {
-                $lookup:
-                {
-                    from: 'schoollevels',
-                    localField: 'schoolLevel',
-                    foreignField: '_id',
-                    as: 'schoolLevel'
-                }
-            },
-            {
-                $unwind: {
-                    path: "$schoolLevel",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup:
-                {
-                    from: 'schooldegrees',
-                    localField: 'schoolLevel.schoolDegree',
-                    foreignField: '_id',
-                    as: 'schoolLevel.schoolDegree'
-                }
-            },
-            {
-                $unwind: {
-                    path: "$schoolLevel.schoolDegree",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
             {
                 $lookup:
                 {
@@ -272,25 +137,54 @@ const getByLessonInFinal = async (req, res) => {
                 }
             },
             {
+                $lookup:
+                {
+                    from: 'schoollevels',
+                    localField: 'schoolLevel',
+                    foreignField: '_id',
+                    as: 'schoolLevel'
+                }
+            },
+            {
+                $unwind: {
+                    path: "$schoolLevel",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: 'schooldegrees',
+                    localField: 'schoolLevel.schoolDegree',
+                    foreignField: '_id',
+                    as: 'schoolLevel.schoolDegree'
+                }
+            },
+            {
+                $unwind: {
+                    path: "$schoolLevel.schoolDegree",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
                 $group: {
                     _id: "$_id",
-                    lesson: { "$first": "$lesson.name" },
+                    gender: { "$first": "$gender" },
+                    signupDate: { "$first": "$signupDate" },
+                    schoolLevel: { $first:{ class: "$schoolLevel.level", degree: "$schoolLevel.schoolDegree.degree" } },
                     available: { $push: { day: "$available.day.name", timeBegin: "$available.timeBegin" } },
-                    schoolDegree: { "$first": "$schoolLevel.schoolDegree.degree" }
-
-
                 }
-            }
-            // {
-            //     $project: { _id: 1, lesson: 1, "schoolLevel.schoolDegree.degree": 1 }
-            // }
+            },
+            {
+                $match: { "schoolLevel.degree": { $in: schoolDegreeChoose } }
+            },
         ])
 
-
         res.json(response)
+
     } catch (error) {
         res.status(500).json(error)
     }
 }
 
-module.exports = { getByAvailable, getByDegreesInSecond, getByLessonInFinal }
+module.exports = { getByAvailable, getByDegrees }
