@@ -1,23 +1,13 @@
 const studentModel = require('../models/student')
 const schoolModel = require('../models/school')
+const parentModel = require('../models/parent')
 
 
-const postStudentsByForm = async (req, res, next) => {
+const postStudentsByForm = async (req, res) => {
     try {
-        const dataReceived = req.body
-        const name = dataReceived.school.name
-        const city = dataReceived.school.city
-
-        const result = await schoolModel.find( { name ,city })
-
-        if (result.length > 0) {
-            dataReceived.school = result
-        } else {
-           const newSchool = await schoolModel.create({ name ,city })
-           dataReceived.school = newSchool
-        }
-        
-        next()
+        const newStudents = req.body
+        await studentModel.create(newStudents)
+        res.json(newStudents)
     } catch (error) {
         res.status(500).json(error)
     }
