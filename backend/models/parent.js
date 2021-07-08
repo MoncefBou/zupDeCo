@@ -6,10 +6,10 @@ const parentSchema = new mongoose.Schema({
     lastName: { type: String, require: true },
     email: { type: String, require: true, unique: true },
     phoneNumber: { type: Number, require: true, unique: true },
-    child: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Student"
-    }]
+    // child: [{
+    //     type: mongoose.Types.ObjectId,
+    //     ref: "Student"
+    // }]
 })
 
 const parentModel = mongoose.model("Parent", parentSchema)
