@@ -4,14 +4,14 @@ const config = require("../config.js")
 
 const login = async (req, res) => {
     try {
-        const admin = req.admin
+        const volunteer = req.volunteer
 
-        const result = bcryptjs.compareSync(req.body.password, admin.password)
+        const result = bcryptjs.compareSync(req.body.password, volunteer.password)
 
         if (result) {
             const token = jwt.sign(
                 {
-                    id: admin._id
+                    id: volunteer._id
                 }, config.secret,
                 {
                     expiresIn: 60 * 60
