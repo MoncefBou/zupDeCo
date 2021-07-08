@@ -9,22 +9,17 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Check from '../checkbox/Check';
+import FormGroup from '@material-ui/core/FormGroup';
+import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const options = [
-    '14h - 15h',
-    '14h30 - 15h30',
-    '15h - 16h',
-    '15h30 - 16h30',
-    '16h - 17h',
-    '16h30 - 17h30',
-    '17h - 18h',
-    '17h30 - 18h30',
-    '18h - 19h',
-    '18h30 - 19h30',
-    '19h - 20h',
+    '14h-15h',
+    '15h-16h',
+    '16h-17h',
+    '17h-18h',
+    '18h-19h',
+    '19h-20h',
 ];
 
 function ConfirmationDialogRaw(props) {
@@ -53,7 +48,8 @@ function ConfirmationDialogRaw(props) {
     };
 
     const handleChange = (event) => {
-        setValue(event.target.value);
+        const newTable = [...value, event.target.value]
+        setValue(newTable);
     };
 
     return (
@@ -66,9 +62,9 @@ function ConfirmationDialogRaw(props) {
             open={open}
             {...other}
         >
-            <DialogTitle id="confirmation-dialog-title">choisie tes horraire du lundi</DialogTitle>
+            <DialogTitle id="confirmation-dialog-title">choisie tes horraire du Mercredi</DialogTitle>
             <DialogContent dividers>
-                <RadioGroup
+                <FormGroup
                     ref={radioGroupRef}
                     aria-label="ringtone"
                     name="ringtone"
@@ -76,9 +72,9 @@ function ConfirmationDialogRaw(props) {
                     onChange={handleChange}
                 >
                     {options.map((option) => (
-                        <FormControlLabel value={option} key={option} control={<Check />} label={option} />
+                        <FormControlLabel value={option} key={option} control={<Checkbox />} label={option} />
                     ))}
-                </RadioGroup>
+                </FormGroup>
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={handleCancel} color="primary">
@@ -110,10 +106,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ConfirmationDialog() {
+export default function ConfirmationDialog(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState('Select');
+    const [value, setValue] = React.useState([]);
 
     const handleClickListItem = () => {
         setOpen(true);
@@ -123,7 +119,10 @@ export default function ConfirmationDialog() {
         setOpen(false);
 
         if (newValue) {
-            setValue(newValue);
+            console.log(newValue);
+            const newTable = [...value, newValue]
+            setValue(newTable);
+            props.getAvailable({ day: 'Mercredi', available: newTable });
         }
     };
 
@@ -139,7 +138,7 @@ export default function ConfirmationDialog() {
                     onClick={handleClickListItem}
                     role="listitem"
                 >
-                    <ListItemText primary="Mercredi" secondary={value} />
+                    <ListItemText primary="Mercredi" secondary={value.join(', ')} />
                 </ListItem>
                 <ConfirmationDialogRaw
                     classes={{
@@ -156,3 +155,4 @@ export default function ConfirmationDialog() {
 
     );
 }
+

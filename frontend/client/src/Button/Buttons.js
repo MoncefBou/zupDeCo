@@ -6,5 +6,5 @@ export default function ButtonDemo() {
         <Button href="/Step" variant="contained">
             Levels
         </Button>
-    );
+    )
 }

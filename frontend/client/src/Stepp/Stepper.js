@@ -27,14 +27,15 @@ function getSteps() {
     return ['Dispo', 'Eleve', 'recap'];
 }
 
-function getStepContent(stepIndex) {
+function getStepContent(stepIndex, getAvailable) {
     switch (stepIndex) {
         case 0:
-            return <Hours />;
+            return <Hours getAvailable = {getAvailable} />;
         case 1:
             return (
-                <div>
-                    <Card /> <Buttons />;
+                <div style={{ textAlign: "center"}}>
+                    <Card /> 
+                    <Buttons />
                 </div>
             )
         case 2:
@@ -45,6 +46,7 @@ function getStepContent(stepIndex) {
 }
 
 export default function HorizontalLabelPositionBelowStepper() {
+    const [available, setAvailable] = React.useState([])
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -61,6 +63,13 @@ export default function HorizontalLabelPositionBelowStepper() {
         setActiveStep(0);
     };
 
+    const getAvailable = (data = {}) => {
+        if (data){
+            const newAvailable = [...available, data];
+            setAvailable(newAvailable)
+        }
+    }
+    console.log('stepper available :',available);
     return (
         <div className={classes.root, 'stepper'}>
             <Stepper activeStep={activeStep} alternativeLabel>
@@ -78,7 +87,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                     </div>
                 ) : (
                     <div className='step'>
-                        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                        <Typography className={classes.instructions}>{getStepContent(activeStep, getAvailable)}</Typography>
                         <div className='box-stepper'>
                             <Button
                                 disabled={activeStep === 0}
