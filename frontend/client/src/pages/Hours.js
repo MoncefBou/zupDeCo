@@ -10,15 +10,15 @@ import Saturday from '../components/Day/Saturday';
 
 
 
-function Hours() {
+function Hours(props) {
     return (
         <div className="box">
-            <Monday />
-            <Tuesday />
-            <Widnersday />
-            <Thursday/>
-            <Friday/>
-            <Saturday/>
+            <Monday getAvailable = {props.getAvailable}/>
+            <Tuesday getAvailable = {props.getAvailable}/>
+            <Widnersday getAvailable = {props.getAvailable}/>
+            <Thursday getAvailable = {props.getAvailable}/>
+            <Friday getAvailable = {props.getAvailable}/>
+            <Saturday getAvailable = {props.getAvailable}/>
         </div>
     );
 }
