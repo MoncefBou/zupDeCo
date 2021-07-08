@@ -8,10 +8,11 @@ import './App.css'
 
 function App() {
   return (
+
     <BrowserRouter>
       <Switch>
-          <Route exact path="/" component={Mom}/>
-          <Route exact path="/Step" component={Dad}/>
+        <Route exact path="/" component={Mom} />
+        <Route exact path="/Step" component={Dad} />
       </Switch>
     </BrowserRouter>
   );
