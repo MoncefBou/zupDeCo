@@ -10,7 +10,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
+import Check from '../checkbox/Check';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const options = [
@@ -58,7 +58,7 @@ function ConfirmationDialogRaw(props) {
             open={open}
             {...other}
         >
-            <DialogTitle id="confirmation-dialog-title">choisie tes horraire du lundi</DialogTitle>
+            <DialogTitle id="confirmation-dialog-title">Lycee</DialogTitle>
             <DialogContent dividers>
                 <RadioGroup
                     ref={radioGroupRef}
@@ -68,7 +68,7 @@ function ConfirmationDialogRaw(props) {
                     onChange={handleChange}
                 >
                     {options.map((option) => (
-                        <FormControlLabel value={option} key={option} control={<Radio />} label={option} />
+                        <FormControlLabel value={option} key={option} control={<Check />} label={option} />
                     ))}
                 </RadioGroup>
             </DialogContent>
