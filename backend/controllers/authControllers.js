@@ -7,9 +7,9 @@ const { MONSECRET } = process.env
 
 const login = async (req, res) => {
     try {
-        const admin = req.admin
+        const volunteer = req.volunteer
 
-        const result = bcryptjs.compareSync(req.body.password, admin.password)
+        const result = bcryptjs.compareSync(req.body.password, volunteer.password)
 
         if (result) {
             const token = jwt.sign(

@@ -1,14 +1,16 @@
-const adminModel = require("../models/admin")
+const volunteerModel = require("../models/volunteer")
 const jwt = require("jsonwebtoken")
 const config = require("../config.js")
 
-const continueIfUserExists = async (req, res, next) =>  {
+const continueIfVolunteerExists = async (req, res, next) =>  {
     try {
         const email = req.body.email
-        const admin = await adminModel.findOne({ email })
+        const volunteer = await volunteerModel.findOne({ email })
 
-        if (admin) {
-            req.admin = admin
+        if (volunteer) {
+            req.volunteer = volunteer
+            // Test PASSAGE ICI
+            console.log("test 1: ", volunteer );
             next()
         } else {
             res.status(400).json({ errorMessage: "User was not found" })
@@ -28,23 +30,23 @@ const verifyToken = async (req, res, next) => {
         const result = jwt.verify(token, config.secret)
 
         if (result.id) {
-            const admin = await adminModel.findById(result.id).lean()
+            const volunteer = await volunteerModel.findById(result.id).lean()
 
-            req.admin = admin
+            req.volunteer = volunteer
             next()
         }
     } catch (error) {
         console.log("Error: ", error)
-        res.status(401).json({ message: "You don't have acces to this information" })
+        res.status(401).json({ message: "You don't have access to this information" })
     }
 }
 
-// const onlyAdmin = (req, res, next) => {
-//     if (req.admin === 1) {
-//         next()
-//     } else {
-//         res.status(403).json({ message: "I know who you are but you can't do that" })
-//     }
-// }
+const onlyAdmin = (req, res, next) => {
+    if (req.volunteer && req.volunteer.role === 0) {
+        next()
+    } else {
+        res.status(403).json({ message: "I know who you are but you are not allow to cross this border" })
+    }
+}
 
-module.exports = { continueIfUserExists, verifyToken } // onlyAdmin }
+module.exports = { continueIfVolunteerExists, verifyToken, onlyAdmin }
