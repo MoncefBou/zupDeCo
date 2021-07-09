@@ -6,7 +6,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Card from '../pages/Card2'
+import Card from '../pages/Card'
 import Levels from '../pages/Levels'
 import Recap from '../pages/Recap'
 
