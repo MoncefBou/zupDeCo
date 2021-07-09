@@ -60,11 +60,8 @@ const SignIn = (props) => {
     useEffect(() => {
         const token = localStorage.getItem("token") || false
 
-        console.log ("on va voir quand meme le token : ", token)
-
         if (token) {
-            // history.push("/Stepper")
-            history.push("/")
+            history.push("/Stepper")
         }
     }, [])
 
@@ -72,15 +69,12 @@ const SignIn = (props) => {
         try {
             const result = await postLogin({ email, password })
 
-            console.log ("on va voir quand meme le result : ", result)
-
             if (result) {
                 localStorage.setItem("token", result.token)
                 props.changeUserConnected(true)
                 history.push("/Stepper")
 
             } else {
-                console.log("result", result)
                 alert("There was a problem")
             }
         } catch (error) {
