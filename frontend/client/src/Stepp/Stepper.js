@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Card from '../pages/Card'
 import Hours from '../pages/Hours'
 import Buttons from '../Button/Buttons'
+import Recap from '../pages/Recap'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,26 +28,11 @@ function getSteps() {
     return ['Dispo', 'Eleve', 'recap'];
 }
 
-function getStepContent(stepIndex, getAvailable) {
-    switch (stepIndex) {
-        case 0:
-            return <Hours getAvailable = {getAvailable} />;
-        case 1:
-            return (
-                <div style={{ textAlign: "center"}}>
-                    <Card /> 
-                    <Buttons />
-                </div>
-            )
-        case 2:
-            return 'ce que tu a selectionner';
-        default:
-            return 'Unknown stepIndex';
-    }
-}
+
 
 export default function HorizontalLabelPositionBelowStepper() {
     const [available, setAvailable] = React.useState([])
+    const [students, setStudents] = React.useState([]) 
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -69,7 +55,26 @@ export default function HorizontalLabelPositionBelowStepper() {
             setAvailable(newAvailable)
         }
     }
+
+    const getStepContent = (stepIndex) => {
+        switch (stepIndex) {
+            case 0:
+                return <Hours getAvailable = {getAvailable} />;
+            case 1:
+                return (
+                    <div style={{ textAlign: "center"}}>
+                        <Card setStudents = {setStudents}/> 
+                        <Buttons />
+                    </div>
+                )
+            case 2:
+                return <Recap available = {available} students = {students}/>
+            default:
+                return 'Unknown stepIndex';
+        }
+    }
     console.log('stepper available :',available);
+    console.log('stepper students :',students);
     return (
         <div className={classes.root, 'stepper'}>
             <Stepper activeStep={activeStep} alternativeLabel>
@@ -87,7 +92,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                     </div>
                 ) : (
                     <div className='step'>
-                        <Typography className={classes.instructions}>{getStepContent(activeStep, getAvailable)}</Typography>
+                        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
                         <div className='box-stepper'>
                             <Button
                                 disabled={activeStep === 0}

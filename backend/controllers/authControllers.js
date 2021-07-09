@@ -1,6 +1,9 @@
 const bcryptjs = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const config = require("../config.js")
+
+require('dotenv').config();
+
+const { MONSECRET } = process.env
 
 const login = async (req, res) => {
     try {
@@ -11,8 +14,8 @@ const login = async (req, res) => {
         if (result) {
             const token = jwt.sign(
                 {
-                    id: volunteer._id
-                }, config.secret,
+                    id: admin._id
+                }, MONSECRET,
                 {
                     expiresIn: 60 * 60
                 })
