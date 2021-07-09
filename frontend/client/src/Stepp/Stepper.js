@@ -50,31 +50,94 @@ function getStepContent(stepIndex, getAvailable) {
 
 export default function HorizontalLabelPositionBelowStepper() {
     const [available, setAvailable] = React.useState([])
-    const [students, setStudents] = React.useState([]) 
-    const [dataStudentAvailable, setDataStudentAvailable] = React.useState()
+    const [students, setStudents] = React.useState([])
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
+    const [selected, setSelected] = React.useState([]);
+    const [dataToRecap, setDataToRecap] = React.useState([]);
+
+
+    const handleClick = (event, name) => {
+        const selectedIndex = selected.indexOf(name);
+        let newSelected = [];
+
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selected, name);
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(
+                selected.slice(0, selectedIndex),
+                selected.slice(selectedIndex + 1),
+            );
+        }
+
+        setSelected(newSelected);
+        console.log(selected);
+
+    };
+
+    const handleSelectAllClick = (event) => {
+        if (event.target.checked) {
+            const newSelecteds = students.map((n) => n.name);
+            setSelected(newSelecteds);
+            return;
+        }
+        setSelected([]);
+    };
 
     const handleNext = async () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        // CODER ICI POUR ENVOYER AVAILABLE AVEC AXIOS ET LA ROUTE 
-        const arrayToSend = []
-        const dataToSend = available.map(elem => {
+        console.log("activeStep", activeStep);
+        if (activeStep === 0) {
+            // CODER ICI POUR ENVOYER AVAILABLE AVEC AXIOS ET LA ROUTE 
+            const arrayToSend = []
+            const dataToSend = available.map(elem => {
 
-            const day = elem.day
-            const available = elem.available[0].map(element => {
-                arrayToSend.push(`${day} ${element}`)
+                const day = elem.day
+                const available = elem.available[0].map(element => {
+                    arrayToSend.push(`${day} ${element}`)
+                })
             })
-        })
 
-        const response = await axios.post('http://localhost:8000/volunteers/filter/available', {
-            available: arrayToSend
-        })
-        setDataStudentAvailable(response.data)
-        console.log("response of axios", response.data);
+            const response = await axios.post('http://localhost:8000/volunteers/filter/available', {
+                available: arrayToSend
+            })
 
+            let studentNumber = 0
+            const newArray = response.data.map(elem => {
+                studentNumber = studentNumber + 1
+                return {
+                    name: `Élève ${studentNumber}`,
+                    gender: elem.gender,
+                    class: elem.schoolLevel.class,
+                    available: elem.available,
+                    id: elem._id
+                }
+            })
+            console.log("newArray", newArray);
+            setStudents(newArray)
+        } else if (activeStep === 1) {
+            const studentsMatch = []
 
+            selected.forEach(element => {
+
+                const newArray = students.filter(elem => {
+                    return elem.name === element
+                })
+
+                if (newArray) {
+                    studentsMatch.push(...newArray)
+                }
+
+            });
+            console.log("SAAAAALUUUUT", students);
+            setDataToRecap(studentsMatch)
+
+        }
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
     const handleBack = () => {
@@ -95,28 +158,26 @@ export default function HorizontalLabelPositionBelowStepper() {
     const getStepContent = (stepIndex) => {
         switch (stepIndex) {
             case 0:
-                return <Hours getAvailable = {getAvailable} />;
+                return <Hours getAvailable={getAvailable} />;
             case 1:
                 return (
-                    <div style={{ textAlign: "center"}}>
-                        <Card setStudents = {setStudents}/> 
+                    <div style={{ textAlign: "center" }}>
+                        <Card handleSelectAllClick={handleSelectAllClick} selected={selected} students={students} setStudents={setStudents} handleClick={handleClick} />
                         <Buttons />
                     </div>
                 )
             case 2:
-                return <Recap available = {available} students = {students}/>
+                return <Recap dataToRecap={dataToRecap} selected={selected} available={available} students={students} />
             default:
                 return 'Unknown stepIndex';
         }
     }
-    console.log('stepper available :',available);
-    console.log('stepper students :',students);
 
     return (
         <div className={classes.root, 'stepper'}>
             <Stepper activeStep={activeStep} alternativeLabel>
                 {steps.map((label) => (
-                    <Step key={label} dataStudentAvailable={dataStudentAvailable}>
+                    <Step key={label} >
                         <StepLabel>{label}</StepLabel>
                     </Step>
                 ))}
@@ -124,7 +185,7 @@ export default function HorizontalLabelPositionBelowStepper() {
             <div>
                 {activeStep === steps.length ? (
                     <div>
-                        <Typography className={classes.instructions}>Toute les etapes sont selectionner</Typography>
+                        <Typography className={classes.instructions}>Les données sont enregistrées, merci !</Typography>
                         <Button onClick={handleReset}>Annuler</Button>
                     </div>
                 ) : (
