@@ -9,9 +9,8 @@ const continueIfVolunteerExists = async (req, res, next) =>  {
 
         if (volunteer) {
             req.volunteer = volunteer
-            // Test PASSAGE ICI
-            console.log("test 1: ", volunteer );
             next()
+
         } else {
             res.status(400).json({ errorMessage: "User was not found" })
         }

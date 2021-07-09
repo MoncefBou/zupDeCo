@@ -3,7 +3,6 @@ const router = express.Router()
 
 const { getAllStudents, getAllVolunteers } = require('../controllers/adminControllers')
 
-
 // router.post('/excel')
 
 router.get('/students', getAllStudents)
