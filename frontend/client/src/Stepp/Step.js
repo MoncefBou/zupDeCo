@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Card from '../pages/Card'
 import Levels from '../pages/Levels'
-
+import Recap from '../pages/Recap'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,23 +24,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Niveaux', 'Eleve', 'recap'];
+    return ['Dispo', 'Eleve', 'recap'];
 }
 
-function getStepContent(stepIndex) {
-    switch (stepIndex) {
-        case 0:
-            return <Levels />;
-        case 1:
-            return <Card />;
-        case 2:
-            return 'ce que tu a selectionner';
-        default:
-            return 'Unknown stepIndex';
-    }
-}
+
 
 export default function HorizontalLabelPositionBelowStepper() {
+    const [available, setAvailable] = React.useState([])
+    const [students, setStudents] = React.useState([]) 
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -57,6 +48,31 @@ export default function HorizontalLabelPositionBelowStepper() {
         setActiveStep(0);
     };
 
+    const getAvailable = (data = {}) => {
+        if (data){
+            const newAvailable = [...available, data];
+            setAvailable(newAvailable)
+        }
+    }
+
+    const getStepContent = (stepIndex) => {
+        switch (stepIndex) {
+            case 0:
+                return <Levels getAvailable = {getAvailable} />;
+            case 1:
+                return (
+                    <div style={{ textAlign: "center"}}>
+                        <Card setStudents = {setStudents}/> 
+                    </div>
+                )
+            case 2:
+                return <Recap available = {available} students = {students}/>
+            default:
+                return 'Unknown stepIndex';
+        }
+    }
+    console.log('stepper available :',available);
+    console.log('stepper students :',students);
     return (
         <div className={classes.root, 'stepper'}>
             <Stepper activeStep={activeStep} alternativeLabel>

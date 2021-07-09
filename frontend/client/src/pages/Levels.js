@@ -5,12 +5,12 @@ import College from '../components/Level/College';
 import Lycee from '../components/Level/Lycee';
 
 
-function Hours() {
+function Hours(props) {
     return (
         <div className="box-levels">
-            <Primaire/>
-            <College />
-            <Lycee/>
+            <Primaire getAvailable = {props.getAvailable}/>
+            <College getAvailable = {props.getAvailable}/>
+            <Lycee getAvailable = {props.getAvailable}/>
         </div>
     );
 }
