@@ -33,19 +33,19 @@ function App() {
 
     <BrowserRouter>
 
-      {/* {!userConnected ?
+      {!userConnected ?
         <li className="nav-item">
-          <Link to="/" className="nav-link">Stepper</Link>
+          {/* <Link to="/" className="nav-link">Stepper</Link> */}
         </li>
         :
         <li className="nav-item">
           <a href="#" className="nav-link" onClick={logout}>Logout</a>
         </li>
-      } */}
+      }
 
 
       <Switch>
-        <Route path="/">
+        <Route exact path="/">
           <SignIn changeUserConnected={setUserConnected} />
         </Route>
         <Route exact path="/Stepper" component={Mom} />
