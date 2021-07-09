@@ -115,7 +115,6 @@ export default function ConfirmationDialog(props) {
         setOpen(false);
 
         if (newValue) {
-            console.log(newValue);
             const newTable = [...value, newValue]
             setValue(newTable);
             props.getAvailable({day: 'Lundi', available : newTable});

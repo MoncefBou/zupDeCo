@@ -1,4 +1,5 @@
 import React from 'react';
+import '../Css/Card.css'
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -16,35 +17,33 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
+
 import secondToHour from '../utils/utils';
 
+// function createData(name, sex, calories,day, hour) {
+//     return { name, sex,calories,day, hour};
+// }
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-
-const rows = [
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
-];
-
-
+// const rows = [
+//     createData('#1',  'F','Seconde', 'lundi','18h - 19h'),
+//     createData('#2',  'F','6eme', 'lundi','18h - 19h'),
+//     createData('#3',  'F','cm2', 'lundi','18h - 19h'),
+//     createData('#4',  'F','3eme', 'lundi','18h - 19h'),
+//     createData('#5',  'F','premiere', 'lundi','18h - 19h'),
+//     createData('#6',  'F','terminal', 'lundi','18h - 19h'),
+//     createData('#7',  'F','Seconde', 'lundi','18h - 19h'),
+//     createData('#8',  'F','Seconde', 'lundi','18h - 19h'),
+//     createData('#9',  'F','5eme', 'lundi','18h - 19h'),
+//     createData('#10', 'F', 'Seconde', 'lundi','18h - 19h'),
+//     createData('#11', 'F', 'cm2', 'lundi','18h - 19h'),
+//     createData('#12', 'F', 'cm1', 'lundi'),'18h - 19h',
+//     createData('#13', 'F', 'terminal', 'lundi','18h - 19h'),
+// ];
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -73,14 +72,15 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'name', numeric: false, disablePadding: true, label: 'name' },
+    { id: 'id', numeric: false, disablePadding: true, label: '_id eleve' },
     { id: 'gender', numeric: true, disablePadding: false, label: 'Genre' },
     { id: 'class', numeric: true, disablePadding: false, label: 'Classe' },
-    { id: 'available', numeric: true, disablePadding: false, label: 'Disponibilité' },
+    { id: 'available', numeric: true, disablePadding: false, label: 'Jour' },
+    // { id: 'hour', numeric: true, disablePadding: false, label: 'heure' },
 ];
 
 function EnhancedTableHead(props) {
-    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -100,7 +100,7 @@ function EnhancedTableHead(props) {
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
+                        padding={headCell.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
                         <TableSortLabel
@@ -168,7 +168,7 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    Nutrition
+                    Choisissez vos futur eleves (j'usqu'a 3 max)
                 </Typography>
             )}
 
@@ -220,8 +220,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
-    // const [selected, setSelected] = React.useState([]);
+    const [orderBy, setOrderBy] = React.useState();
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -232,34 +231,39 @@ export default function EnhancedTable(props) {
         setOrderBy(property);
     };
 
-    // const handleSelectAllClick = (event) => {
-    //     if (event.target.checked) {
-    //         const newSelecteds = props.students.map((n) => n.name);
-    //         setSelected(newSelecteds);
-    //         return;
-    //     }
-    //     setSelected([]);
-    // };
+    const handleSelectAllClick = (event) => {
+        if (event.target.checked) {
+            const newSelecteds = props.students.map((n) => n.id);
+            setSelected(newSelecteds);
 
-    // const handleClick = (event, name) => {
-    //     const selectedIndex = selected.indexOf(name);
-    //     let newSelected = [];
+            props.setStudents(newSelecteds)
+            return;
+        }
+        setSelected([]);
+    };
 
-    //     if (selectedIndex === -1) {
-    //         newSelected = newSelected.concat(selected, name);
-    //     } else if (selectedIndex === 0) {
-    //         newSelected = newSelected.concat(selected.slice(1));
-    //     } else if (selectedIndex === selected.length - 1) {
-    //         newSelected = newSelected.concat(selected.slice(0, -1));
-    //     } else if (selectedIndex > 0) {
-    //         newSelected = newSelected.concat(
-    //             selected.slice(0, selectedIndex),
-    //             selected.slice(selectedIndex + 1),
-    //         );
-    //     }
+    const handleClick = (event, name) => {
+        const selectedIndex = selected.indexOf(name);
+        let newSelected = [];
 
-    //     setSelected(newSelected);
-    // };
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selected, name);
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(
+                selected.slice(0, selectedIndex),
+                selected.slice(selectedIndex + 1),
+            );
+
+        }
+        console.log('newSelecteds :', newSelected);
+        props.setStudents(newSelected)
+
+        setSelected(newSelected);
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -274,14 +278,14 @@ export default function EnhancedTable(props) {
         setDense(event.target.checked);
     };
 
-    const isSelected = (name) => props.selected.indexOf(name) !== -1;
+    const isSelected = (name) => selected.indexOf(name) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.students.length - page * rowsPerPage);
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root, 'box-card'}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={props.selected.length} />
+                <EnhancedTableToolbar numSelected={selected.length} />
                 <TableContainer>
                     <Table
                         className={classes.table}
@@ -291,10 +295,10 @@ export default function EnhancedTable(props) {
                     >
                         <EnhancedTableHead
                             classes={classes}
-                            numSelected={props.selected.length}
+                            numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={props.handleSelectAllClick}
+                            onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
                             rowCount={props.students.length}
                         />
@@ -302,17 +306,18 @@ export default function EnhancedTable(props) {
                             {stableSort(props.students, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(row.name);
+                                    const isItemSelected = isSelected(row.id);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => props.handleClick(event, row.name)}
+                                            onClick={(event) => handleClick(event, row.id)}
+                                            // onClick={() => console.log('salut')}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={row.id}
                                             selected={isItemSelected}
                                         >
                                             <TableCell padding="checkbox">
@@ -322,15 +327,15 @@ export default function EnhancedTable(props) {
                                                 />
                                             </TableCell>
                                             <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                {row.name}
+                                                {row.id}
                                             </TableCell>
-                                            <TableCell align="right">{row.gender}</TableCell>
-                                            <TableCell align="right">{row.class}</TableCell>
-                                            {row.available.map(elem => {
+                                            <TableCell align="left">{row.gender}</TableCell>
+                                            <TableCell align="left">{row.class}</TableCell>
+                                            {/* {row.available.map(elem => {
                                                 const hourInSecond = elem.timeBegin
                                                 const hours = secondToHour(hourInSecond)
                                                 return <TableCell align="left">{`${elem.day} ${hours}`}</TableCell>
-                                            })}
+                                            })} */}
                                         </TableRow>
                                     );
                                 })}
@@ -345,13 +350,17 @@ export default function EnhancedTable(props) {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={rows.length}
+                    count={props.students.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
+            {/* <FormControlLabel
+                control={<Switch checked={dense} onChange={handleChangeDense} />}
+                label="Dense padding"
+            /> */}
         </div>
     );
 }
