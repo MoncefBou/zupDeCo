@@ -212,7 +212,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -231,6 +231,8 @@ export default function EnhancedTable() {
         if (event.target.checked) {
             const newSelecteds = rows.map((n) => n.name);
             setSelected(newSelecteds);
+            // console.log('newSelecteds :', newSelecteds);
+            // props.setStudents(newSelecteds)
             return;
         }
         setSelected([]);
@@ -251,7 +253,10 @@ export default function EnhancedTable() {
                 selected.slice(0, selectedIndex),
                 selected.slice(selectedIndex + 1),
             );
+
         }
+        console.log('newSelecteds :', newSelected);
+            props.setStudents(newSelected)
 
         setSelected(newSelected);
     };
@@ -272,6 +277,8 @@ export default function EnhancedTable() {
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+console.log('select ', selected);
 
     return (
         <div className={classes.root, 'box-card'}>
