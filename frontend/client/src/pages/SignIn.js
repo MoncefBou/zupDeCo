@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
+import { postLogin } from '../utils/network';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -26,6 +29,7 @@ function Copyright() {
     );
 }
 
+
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -46,8 +50,43 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn() {
+const SignIn = (props) => {
     const classes = useStyles();
+    let history = useHistory()
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        const token = localStorage.getItem("token") || false
+
+        console.log ("on va voir quand meme le token : ", token)
+
+        if (token) {
+            // history.push("/Stepper")
+            history.push("/")
+        }
+    }, [])
+
+    const login = async () => {
+        try {
+            const result = await postLogin({ email, password })
+
+            console.log ("on va voir quand meme le result : ", result)
+
+            if (result) {
+                localStorage.setItem("token", result.token)
+                props.changeUserConnected(true)
+                history.push("/Stepper")
+
+            } else {
+                console.log("result", result)
+                alert("There was a problem")
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -70,6 +109,8 @@ export default function SignIn() {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
                         variant="outlined"
@@ -81,17 +122,19 @@ export default function SignIn() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     />
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={login}
                     >
                         Sign In
                     </Button>
@@ -115,3 +158,5 @@ export default function SignIn() {
         </Container>
     );
 }
+
+export default SignIn

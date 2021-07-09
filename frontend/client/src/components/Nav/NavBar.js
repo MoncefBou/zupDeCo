@@ -31,7 +31,7 @@ export default function ButtonAppBar() {
                     </Typography>
                         <nav className = 'nav-bar'>
                             <ul>
-                                <li><Link to="/">FORMULAIRE</Link></li>
+                                <li><Link to="/Stepper">FORMULAIRE</Link></li>
                             </ul>
                         </nav>
                     <Button color="inherit">Logout</Button>
