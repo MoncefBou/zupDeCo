@@ -1,5 +1,7 @@
 const express = require('express')
 
+const convertAvailableInSecond = require('../utils/convertAvailableInSecond')
+
 const studentModel = require('../models/student');
 const lessonModel = require('../models/lesson')
 const availableModel = require('../models/available')
@@ -15,8 +17,8 @@ const mongoose = require("mongoose");
 // --- TODO : RAJOUTER LES STATUS DES JSON
 const getByAvailable = async (req, res) => {
     try {
-        const dataAvailable = req.body.available
-
+        const available = req.body.available
+        const dataAvailable = await convertAvailableInSecond(available)
 
         // ON FAIT UNE REQUETE À LA BDD EN LUI DEMANDANT DE MATCHER AVEC LES ELEVES QUI ONT LES MÊMES DISPO 
         const response = await studentModel.aggregate([
@@ -94,6 +96,8 @@ const getByAvailable = async (req, res) => {
         ])
 
         res.json(response)
+
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ "err": error })

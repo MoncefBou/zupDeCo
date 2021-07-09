@@ -10,6 +10,7 @@ import Card from '../pages/Card'
 import Hours from '../pages/Hours'
 import Buttons from '../Button/Buttons'
 import Recap from '../pages/Recap'
+import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,17 +29,52 @@ function getSteps() {
     return ['Dispo', 'Eleve', 'recap'];
 }
 
+function getStepContent(stepIndex, getAvailable) {
+    switch (stepIndex) {
+        case 0:
+            return <Hours getAvailable={getAvailable} />;
+        case 1:
+            return (
+                <div style={{ textAlign: "center" }}>
+                    <Card />
+                    <Buttons />
+                </div>
+            )
+        case 2:
+            return 'ce que tu a selectionner';
+        default:
+            return 'Unknown stepIndex';
+    }
+}
 
 
 export default function HorizontalLabelPositionBelowStepper() {
     const [available, setAvailable] = React.useState([])
     const [students, setStudents] = React.useState([]) 
+    const [dataStudentAvailable, setDataStudentAvailable] = React.useState()
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
 
-    const handleNext = () => {
+    const handleNext = async () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        // CODER ICI POUR ENVOYER AVAILABLE AVEC AXIOS ET LA ROUTE 
+        const arrayToSend = []
+        const dataToSend = available.map(elem => {
+
+            const day = elem.day
+            const available = elem.available[0].map(element => {
+                arrayToSend.push(`${day} ${element}`)
+            })
+        })
+
+        const response = await axios.post('http://localhost:8000/volunteers/filter/available', {
+            available: arrayToSend
+        })
+        setDataStudentAvailable(response.data)
+        console.log("response of axios", response.data);
+
+
     };
 
     const handleBack = () => {
@@ -50,7 +86,7 @@ export default function HorizontalLabelPositionBelowStepper() {
     };
 
     const getAvailable = (data = {}) => {
-        if (data){
+        if (data) {
             const newAvailable = [...available, data];
             setAvailable(newAvailable)
         }
@@ -75,11 +111,12 @@ export default function HorizontalLabelPositionBelowStepper() {
     }
     console.log('stepper available :',available);
     console.log('stepper students :',students);
+
     return (
         <div className={classes.root, 'stepper'}>
             <Stepper activeStep={activeStep} alternativeLabel>
                 {steps.map((label) => (
-                    <Step key={label}>
+                    <Step key={label} dataStudentAvailable={dataStudentAvailable}>
                         <StepLabel>{label}</StepLabel>
                     </Step>
                 ))}
