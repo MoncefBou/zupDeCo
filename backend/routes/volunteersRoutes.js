@@ -4,7 +4,7 @@ const { getByAvailable, getByDegrees } = require('../controllers/volunteersContr
 
 const router = express.Router()
 
-router.get('/filter/available', getByAvailable)
+router.post('/filter/available', getByAvailable)
 
 router.get('/filter/schoolDegree', getByDegrees)
 
