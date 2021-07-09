@@ -8,13 +8,13 @@ const { MONSECRET } = process.env
 const login = async (req, res) => {
     try {
         const volunteer = req.volunteer
-
+        
         const result = bcryptjs.compareSync(req.body.password, volunteer.password)
 
         if (result) {
             const token = jwt.sign(
                 {
-                    id: admin._id
+                    id: volunteer._id
                 }, MONSECRET,
                 {
                     expiresIn: 60 * 60

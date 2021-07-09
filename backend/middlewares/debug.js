@@ -4,6 +4,4 @@ const debug = (req, res, next) => {
     next()
 }
 
-module.exports = {
-    debug
-}
+module.exports = { debug }
