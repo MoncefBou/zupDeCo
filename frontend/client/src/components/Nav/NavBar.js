@@ -27,13 +27,8 @@ export default function ButtonAppBar() {
             <AppBar position="static">
                 <Toolbar style={{ background: "#7B0099" }}>
                     <Typography variant="h6" className={classes.title}>
-                        Zupdeco
+                        HomeClasse
                     </Typography>
-                        <nav className = 'nav-bar'>
-                            <ul>
-                                <li><Link to="/Stepper">FORMULAIRE</Link></li>
-                            </ul>
-                        </nav>
                     <Button color="inherit">Logout</Button>
                 </Toolbar>
             </AppBar>

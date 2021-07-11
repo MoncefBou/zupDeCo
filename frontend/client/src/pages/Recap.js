@@ -1,27 +1,29 @@
 import React from 'react'
 import secondToHour from '../utils/utils'
+import '../Css/Recap.css'
 
 function Recap(props) {
-    console.log("available", props.dataToRecap.available);
+
     return (
         <div>
-            <div>
-                <h2>Eleves selectionner :</h2>
+            <h2 className="h2Recap">Élève(s) sélectionné(s) :</h2>
+            <div className="recap">
+
                 <ul>
                     {props.dataToRecap.map((elem) => {
                         return (
-                            <div>
+                            <div className="cardRecap">
 
                                 <h3>{elem.name}</h3>
                                 <ul>
-                                    <li>Genre : {elem.gender}</li>
-                                    <li>Classe : {elem.class}</li>
-                                    <li>
-                                        {elem.available.map((element, index) => {
+                                    <li><strong>Genre :</strong> {elem.gender}</li>
+                                    <li><strong>Classe :</strong> {elem.class}</li>
+                                    <li><strong>Disponibilité :</strong>
+                                         {elem.available.map((element, index) => {
                                             const hourInSecond = element.timeBegin
                                             const hours = secondToHour(hourInSecond)
 
-                                            return <span>{`${element.day} ${hours}${index === (elem.available.length-1)? '' : ' - '}`} </span>
+                                            return <span> {`${element.day} ${hours}${index === (elem.available.length - 1) ? '' : ' - '}`} </span>
                                         })}
                                     </li>
                                 </ul>
@@ -30,17 +32,6 @@ function Recap(props) {
                     })}
                 </ul>
             </div>
-            {/* <div>
-                <h2>Horraire selectionner :</h2>
-                <ul>
-                    {props.available.map((elem) => {
-                        return <li>
-                            <p>{elem.day}</p>
-                            <p>{elem.available.join('')}</p>
-                        </li>
-                    })}
-                </ul>
-            </div> */}
         </div>
     )
 }

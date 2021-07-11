@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import '../Css/Stepper.css'
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -11,6 +12,8 @@ import Hours from '../pages/Hours'
 import Buttons from '../Button/Buttons'
 import Recap from '../pages/Recap'
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Dispo', 'Eleve', 'recap'];
+    return ['Disponibilité', 'Élève', 'Récapitulatif'];
 }
 
 function getStepContent(stepIndex, getAvailable) {
@@ -56,7 +59,16 @@ export default function HorizontalLabelPositionBelowStepper() {
     const steps = getSteps();
     const [selected, setSelected] = React.useState([]);
     const [dataToRecap, setDataToRecap] = React.useState([]);
+    let history = useHistory()
 
+    useEffect(() => {
+
+        const token = localStorage.getItem("token") || false
+
+        if (!token) {
+            history.push('/')
+        }
+    }, [])
 
     const handleClick = (event, name) => {
         const selectedIndex = selected.indexOf(name);
@@ -102,6 +114,8 @@ export default function HorizontalLabelPositionBelowStepper() {
                 })
             })
 
+            const token = localStorage.getItem("token")
+
             const response = await axios.post('http://localhost:8000/volunteers/filter/available', {
                 available: arrayToSend
             })
@@ -117,7 +131,6 @@ export default function HorizontalLabelPositionBelowStepper() {
                     id: elem._id
                 }
             })
-            console.log("newArray", newArray);
             setStudents(newArray)
         } else if (activeStep === 1) {
             const studentsMatch = []
@@ -133,7 +146,7 @@ export default function HorizontalLabelPositionBelowStepper() {
                 }
 
             });
-            console.log("SAAAAALUUUUT", students);
+
             setDataToRecap(studentsMatch)
 
         }
@@ -163,11 +176,10 @@ export default function HorizontalLabelPositionBelowStepper() {
                 return (
                     <div style={{ textAlign: "center" }}>
                         <Card handleSelectAllClick={handleSelectAllClick} selected={selected} students={students} setStudents={setStudents} handleClick={handleClick} />
-                        <Buttons />
                     </div>
                 )
             case 2:
-                return <Recap dataToRecap={dataToRecap} selected={selected} available={available} students={students} />
+                return <Recap dataToRecap={dataToRecap} />
             default:
                 return 'Unknown stepIndex';
         }
@@ -184,25 +196,29 @@ export default function HorizontalLabelPositionBelowStepper() {
             </Stepper>
             <div>
                 {activeStep === steps.length ? (
-                    <div>
+                    <div className="messageEnd">
                         <Typography className={classes.instructions}>Les données sont enregistrées, merci !</Typography>
-                        <Button onClick={handleReset}>Annuler</Button>
                     </div>
                 ) : (
                     <div className='step'>
                         <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
                         <div className='box-stepper'>
-                            <Button
-                                disabled={activeStep === 0}
-                                onClick={handleBack}
-                                className={classes.backButton}
-                            >
-                                Precedent
-                            </Button>
-                            <Button
-                                variant="contained" color="primary" onClick={handleNext}>
-                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                            </Button>
+                            <div className='buttonAnnulerSuivant'>
+                                <Button
+                                    disabled={activeStep === 0}
+                                    onClick={handleBack}
+                                    className={classes.backButton}
+                                >
+                                    Précédent
+                                </Button>
+                                <Button
+                                    variant="contained" color="primary" onClick={handleNext}>
+                                    {activeStep === steps.length - 1 ? 'Valider' : 'Suivant'}
+                                </Button>
+                            </div>
+                            <div className="buttonLevel">
+                                {activeStep === 1 && <Buttons />}
+                            </div>
                         </div>
                     </div>
                 )}

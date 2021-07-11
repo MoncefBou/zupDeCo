@@ -44,7 +44,7 @@ const verifyToken = async (req, res, next) => {
 }
 
 const onlyAdmin = (req, res, next) => {
-    if (req.volunteer && req.volunteer.role === 0) {
+    if (req.volunteer && req.volunteer.role === 1) {
         next()
     } else {
         res.status(403).json({ message: "I know who you are but you are not allow to cross this border" })

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Mom from './Mom';
 import Dad from './Dad';
+import SimpleCard from './pages/HomeAdmin'
 import { BrowserRouter, Switch, Route, Link, useHistory } from 'react-router-dom'
 import './App.css'
 import SignIn from './pages/SignIn';
@@ -33,24 +34,13 @@ function App() {
 
     <BrowserRouter>
 
-      {!userConnected ?
-        <li className="nav-item">
-          {/* <Link to="/" className="nav-link">Stepper</Link> */}
-        </li>
-        :
-        <li className="nav-item">
-          <a href="#" className="nav-link" onClick={logout}>Logout</a>
-        </li>
-      }
-
-
       <Switch>
         <Route exact path="/">
           <SignIn changeUserConnected={setUserConnected} />
         </Route>
-        <Route exact path="/Stepper" component={Mom} />
-        <Route exact path="/Step" component={Dad} />
-
+        <Route exact path="/available" component={Mom} />
+        <Route exact path="/degree" component={Dad} />
+        <Route exact path='/admin' component={SimpleCard}/>
 
         {/* <Route path="/admin">
           <Admin disconnectUser={logout} />
@@ -62,3 +52,13 @@ function App() {
 }
 
 export default App;
+
+// {!userConnected ?
+//   <li className="nav-item">
+//     {/* <Link to="/" className="nav-link">Stepper</Link> */}
+//   </li>
+//   :
+//   <li className="nav-item">
+//     <a href="#" className="nav-link" onClick={logout}>Logout</a>
+//   </li>
+// }

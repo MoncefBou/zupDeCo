@@ -1,7 +1,8 @@
-.box-stepper {
-    margin: 30px;
+.box-step {
+    margin: 50px;
+    margin-left: 250px;
     display: flex;
-    justify-content: space-around;
+    justify-content: left;
 }
 .stepper{
     margin-top: 70px;
@@ -10,10 +11,9 @@
     margin-top: 40px;
 }
 
-.messageEnd {
+.buttonAnnulerSuivant {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: left;
 }
 
 @media screen and (max-width: 640px) {

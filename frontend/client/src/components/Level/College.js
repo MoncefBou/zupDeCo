@@ -120,7 +120,7 @@ export default function ConfirmationDialog(props) {
             console.log(newValue);
             const newTable = [...value, newValue]
             setValue(newTable);
-            props.getAvailable({day: 'College', available : newTable});
+            props.getLevel({degree: 'College', level : newTable});
         }
     };
 

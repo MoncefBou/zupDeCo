@@ -20,7 +20,7 @@ const login = async (req, res) => {
                     expiresIn: 60 * 60
                 })
 
-            res.json({ message: "You're now logged in!", token })
+            res.json({ message: "You're now logged in!", token, role: volunteer.role, firstName: volunteer.firstName })
         } else {
             res.status(401).json({ message: "Login failed" })
         }

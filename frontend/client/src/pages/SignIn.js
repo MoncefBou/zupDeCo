@@ -61,7 +61,7 @@ const SignIn = (props) => {
         const token = localStorage.getItem("token") || false
 
         if (token) {
-            history.push("/Stepper")
+            history.push("/available")
         }
     }, [])
 
@@ -71,8 +71,14 @@ const SignIn = (props) => {
 
             if (result) {
                 localStorage.setItem("token", result.token)
+                localStorage.setItem("role", result.role)
                 props.changeUserConnected(true)
-                history.push("/Stepper")
+
+                if (result.role === 0) {
+                    history.push("/available")
+                } else if (result.role === 1) {
+                    history.push("/admin")
+                }
 
             } else {
                 alert("There was a problem")
@@ -90,7 +96,7 @@ const SignIn = (props) => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Se connecter
                 </Typography>
                 <form className={classes.form} noValidate>
                     <TextField
@@ -99,8 +105,8 @@ const SignIn = (props) => {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
-                        name="email"
+                        label="Adresse Mail"
+                        name="Adresse Mail"
                         autoComplete="email"
                         autoFocus
                         value={email}
@@ -111,8 +117,8 @@ const SignIn = (props) => {
                         margin="normal"
                         required
                         fullWidth
-                        name="password"
-                        label="Password"
+                        name="Mot de passe"
+                        label="Mot de passe"
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -130,17 +136,12 @@ const SignIn = (props) => {
                         className={classes.submit}
                         onClick={login}
                     >
-                        Sign In
+                        Se connecter
                     </Button>
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                                Mot de passe oublié?
                             </Link>
                         </Grid>
                     </Grid>
