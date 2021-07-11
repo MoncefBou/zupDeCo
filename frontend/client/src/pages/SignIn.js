@@ -59,9 +59,12 @@ const SignIn = (props) => {
 
     useEffect(() => {
         const token = localStorage.getItem("token") || false
+        const role = localStorage.getItem("role")
 
-        if (token) {
+        if (token && role === "0" ) {
             history.push("/available")
+        } else if ( token && role === "1" ) {
+            history.push("/admin")
         }
     }, [])
 
@@ -72,8 +75,9 @@ const SignIn = (props) => {
             if (result) {
                 localStorage.setItem("token", result.token)
                 localStorage.setItem("role", result.role)
-                props.changeUserConnected(true)
+                // props.changeUserConnected(true)
 
+                console.log("result.role", result.role)
                 if (result.role === 0) {
                     history.push("/available")
                 } else if (result.role === 1) {
@@ -134,7 +138,7 @@ const SignIn = (props) => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={login}
+                        onClick={(e) => login()}
                     >
                         Se connecter
                     </Button>
