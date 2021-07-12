@@ -72,6 +72,8 @@ const SignIn = (props) => {
         try {
             const result = await postLogin({ email, password })
 
+            // console.log("result: ", result);
+
             if (result) {
                 localStorage.setItem("token", result.token)
                 localStorage.setItem("role", result.role)
