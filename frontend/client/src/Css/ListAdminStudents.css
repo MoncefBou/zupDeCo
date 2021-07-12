@@ -1,0 +1,17 @@
+.profilStudent {
+    display: flex;
+    justify-content: center;
+}
+
+.listStudents {
+    margin-top: 20px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.buttonAnnuler {
+    display: flex;
+    justify-content: center;
+}

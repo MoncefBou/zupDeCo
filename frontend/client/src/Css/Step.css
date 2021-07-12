@@ -1,0 +1,29 @@
+.box-step {
+    margin: 50px;
+    margin-left: 250px;
+    display: flex;
+    justify-content: left;
+}
+.stepper{
+    margin-top: 70px;
+}
+.step{
+    margin-top: 40px;
+}
+
+.buttonAnnulerSuivant {
+    display: flex;
+    justify-content: left;
+}
+
+@media screen and (max-width: 640px) {
+    .box-stepper {
+        margin: 20px
+    }
+    .stepper{
+        margin-top: 30px;
+    }
+    .step{
+        margin-top: 0px;
+    }
+}

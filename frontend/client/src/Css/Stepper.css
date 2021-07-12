@@ -1,0 +1,29 @@
+.box-stepper {
+    margin: 30px;
+    display: flex;
+    justify-content: space-around;
+}
+.stepper{
+    margin-top: 70px;
+}
+.step{
+    margin-top: 40px;
+}
+
+.messageEnd {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (max-width: 640px) {
+    .box-stepper {
+        margin: 20px
+    }
+    .stepper{
+        margin-top: 30px;
+    }
+    .step{
+        margin-top: 0px;
+    }
+}
