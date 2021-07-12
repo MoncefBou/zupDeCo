@@ -55,7 +55,6 @@ export default function CheckboxList() {
     const dataOfArray = response.data
 
     setStudents(dataOfArray)
-    console.log("response", response);
   }, [])
 
   const clickStudent = (value) => {

@@ -54,12 +54,12 @@ export default function HorizontalLabelPositionBelowStepper() {
 
     const handleChange = (event, levelChoose) => {
 
-        if ( level.indexOf(levelChoose) === -1 ) {
+        if (level.indexOf(levelChoose) === -1) {
             setLevel([...level, levelChoose])
         } else {
-            const index = level.indexOf(levelChoose) 
+            const index = level.indexOf(levelChoose)
             const newLevel = level
-            
+
             newLevel.splice(index, 1)
             setLevel(newLevel)
         }
@@ -145,16 +145,9 @@ export default function HorizontalLabelPositionBelowStepper() {
         }
 
         setSelected(newSelected);
-        console.log(selected);
+
 
     };
-
-    // const getLevel = (data = {}) => {
-    //     if (data) {
-    //         const newLevel = [...level, data];
-    //         setLevel(newLevel)
-    //     }
-    // }
 
     const getStepContent = (stepIndex) => {
 

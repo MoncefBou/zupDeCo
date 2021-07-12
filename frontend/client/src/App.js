@@ -7,6 +7,7 @@ import './App.css'
 import SignIn from './pages/SignIn';
 import ListStudents from './pages/ListAdminStudents'
 import ListVolunteers from './pages/ListAdminVolunteers'
+import FormPropsTextFields from './pages/FormPropsTextFields'
 
 
 
@@ -38,6 +39,7 @@ function App() {
     <BrowserRouter>
 
       <Switch>
+        <Route exact path="/formulaire" component={FormPropsTextFields} />
         <Route exact path="/élèves" component={ListStudents} /> 
         <Route exact path="/tuteurs" component={ListVolunteers} /> 
         <Route exact path="/">
