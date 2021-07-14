@@ -49,7 +49,7 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'name', numeric: false, disablePadding: true, label: 'name' },
+    { id: 'name', numeric: false, disablePadding: true, label: 'Nom' },
     { id: 'gender', numeric: true, disablePadding: false, label: 'Genre' },
     { id: 'class', numeric: true, disablePadding: false, label: 'Classe' },
     { id: 'available', numeric: true, disablePadding: false, label: 'Disponibilité' },
@@ -144,7 +144,7 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    Nutrition
+                    Élève(s) disponible
                 </Typography>
             )}
 
@@ -320,6 +320,7 @@ export default function EnhancedTable(props) {
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
+                    name="ligne"
                     component="div"
                     count={props.students.length}
                     rowsPerPage={rowsPerPage}

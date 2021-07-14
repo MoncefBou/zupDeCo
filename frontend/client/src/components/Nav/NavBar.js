@@ -36,7 +36,7 @@ const logOut = () => {
                     <Typography variant="h6" className={classes.title}>
                         HomeClasse
                     </Typography>
-                    <Button onClick={(e) => logOut()} color="inherit">Logout</Button>
+                    <Button onClick={(e) => logOut()} color="inherit">déconnexion</Button>
                 </Toolbar>
             </AppBar>
         </div>

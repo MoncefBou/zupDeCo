@@ -21,7 +21,7 @@ function Copyright() {
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                HomeClasse
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -131,7 +131,7 @@ const SignIn = (props) => {
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
+                        label="Se souvenir de moi"
                     />
                     <Button
                         fullWidth

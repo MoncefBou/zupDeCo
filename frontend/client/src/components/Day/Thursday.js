@@ -58,7 +58,7 @@ function ConfirmationDialogRaw(props) {
             open={open}
             {...other}
         >
-            <DialogTitle id="confirmation-dialog-title">choisie tes horraire du Jeudi</DialogTitle>
+            <DialogTitle id="confirmation-dialog-title">Choisissez vos horaires</DialogTitle>
             <DialogContent dividers>
                 <FormGroup
                     ref={radioGroupRef}
